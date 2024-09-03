@@ -1,0 +1,13 @@
+package BSCampMailTest.BSCampMailProgramTest;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BsCampMailProgramTestApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BsCampMailProgramTestApplication.class, args);
+	}
+
+}

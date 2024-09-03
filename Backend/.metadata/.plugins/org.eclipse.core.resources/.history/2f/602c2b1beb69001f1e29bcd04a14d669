@@ -1,0 +1,9 @@
+package BSCampMailTest.BSCampMailProgramTest.Util;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class EmailUtil {
+
+   
+}

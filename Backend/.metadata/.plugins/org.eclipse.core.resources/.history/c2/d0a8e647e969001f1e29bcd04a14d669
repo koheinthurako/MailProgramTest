@@ -1,0 +1,19 @@
+package BSCampMailTest.BSCampMailProgramTest.ServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import BSCampMailTest.BSCampMailProgramTest.EmailUtil;
+import BSCampMailTest.BSCampMailProgramTest.Service.MailService;
+
+public class MailServiceImpl implements MailService{
+
+	@Override
+	public String sendMail(String[] bccRecipients) {
+		
+		
+		EmailUtil emailUtil;
+		private static final int BATCH_SIZE = 500; // Gmail's approximate limit for BCC recipients per email
+		return null;
+	}
+
+}
