@@ -1,0 +1,5 @@
+package BSCampMailTest.BSCampMailProgramTest.Entity;
+
+public class MailRequest {
+
+}

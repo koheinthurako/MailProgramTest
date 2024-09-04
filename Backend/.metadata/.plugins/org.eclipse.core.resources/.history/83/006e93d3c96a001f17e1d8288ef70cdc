@@ -1,0 +1,57 @@
+package BSCampMailTest.BSCampMailProgramTest.Controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import BSCampMailTest.BSCampMailProgramTest.Service.MailService;
+import BSCampMailTest.BSCampMailProgramTest.ServiceImpl.MailServiceImpl;
+
+@RestController
+@RequestMapping("/mail")
+public class MailController {
+	
+	@Autowired
+	MailService mailService;
+	
+	@Autowired
+	MailServiceImpl mailServiceImpl;
+	
+//	@PutMapping("/sendmail")
+//	public ResponseEntity<String> sendAllMails(){
+//		String[] bccRecipients = {"captainthura99@gmail.com","kohein10151099@gmail.com","dccreation392019@gmail.com"};
+//		return new ResponseEntity<>(mailService.sendMail(bccRecipients),HttpStatus.OK);
+//	}
+	
+//	@CrossOrigin(origins = "http://localhost:3000")
+//	@PutMapping("/sendmail")
+//	public ResponseEntity<String> sendAllMails(@RequestParam("title") String title, @RequestParam("subject") String subject, @RequestParam String[] bccRecipients){
+//		System.out.println("Send all Mails is working");
+////		String[] bccRecipients = {"captainthura99@gmail.com","kohein10151099@gmail.com","dccreation392019@gmail.com"};
+//		return new ResponseEntity<>(mailService.sendMail(title, subject, bccRecipients),HttpStatus.OK);
+//	}
+	
+	
+	@CrossOrigin(origins = "http://localhost:3000")
+	@PostMapping("/sendmail")
+	public ResponseEntity<String> sendAllMails(
+	        @RequestParam("title") String title,
+	        @RequestParam("subject") String subject,
+	        @RequestParam("bccRecipients") String[] bccRecipients) {
+
+	    System.out.println("Send all Mails is working");
+
+	    return new ResponseEntity<>(mailService.sendMail(title, subject, bccRecipients), HttpStatus.OK);
+	}
+
+}
