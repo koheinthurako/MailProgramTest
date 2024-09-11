@@ -15,73 +15,100 @@ public class MailServiceImpl implements MailService{
 
 	@Autowired
 	EmailUtil emailUtil;
-	private static final int BATCH_SIZE = 500; // Gmail's approximate limit for BCC recipients per email
+	private static final int BATCH_SIZE = 450; // Gmail's approximate limit for BCC recipients per email
+	
+//	@Override
+//	public String sendMail(String title, String subject, String[] bccRecipients) {
+////		String subject = "Vietnam Zoom Seminar Test";
+//		System.out.println("---------------------------------------------");
+//		System.out.println("Dar Ka front ka send lite tae title " + title);
+//		System.out.println("Dar Ka dot subject " + subject);
+//		System.out.println("---------------------------------------------");
+//		String htmlContent = """
+//	            <html>
+//	            <body>
+//	                <h3>ဘွဲ့ယူပြီးတော့ Japan မှာသွားရောက်အလုပ်လုပ်ချင်ပါသလား</h3>
+//	                <hr>
+//	                <p>
+//			            မင်္ဂလာပါ
+//						BS Camp Japanese Language Academy မှဖြစ်ပါတယ်
+//					</p>
+//					<p>
+//						ဒီအပတ်စနေနေ့ကျရင် Vietnam မှာ ဘွဲ့ယူပြီး <br>
+//						Japan မှာ သွားရောက်အလုပ်လုပ်နိုင်မယ့် program အကြောင်း
+//						ရှင်းပြမယ့် webinar ရှိတယ်နော်
+//					</p>
+//					<p>
+//						အဲ့ဒီနေ့ကျရင် BS Camp ကနေ ၇ လပိုင်းကျောင်းနဲ့ သွားထားတဲ့ <br>
+//						လက်ရှိမှာ Vietnam နိုင်ငံရဲ့ ကာလတို တက္ကသိုလ်မှာတက်ရောက်နေတဲ့ <br>
+//						စီနီယာတချို့ကိုလည်း ဖိတ်ခေါ်ထားပါတယ်
+//					</p>
+//					<p>
+//						တကယ်တက်ရောက်နေတဲ့စီနီယာတွေရဲ့ စကားသံတွေလည်း <br> နားထောင်လို့ရသလို မေးခွန်းတွေလည်းမေးလို့
+//						ရတယ်နော်
+//					</p>
+//					<p>
+//						Webinar ကျင်းပမည့်နေ့ရက် : <span style="color: red;">27.7.2024 (Sat)</span> <br>
+//						Webinar ကျင်းပမည့်အချိန်  : <span style="color: red;">မြန်မာစံတော်ချိန် ည ၇ နာရီမှ ၉ နာရီအထိ</span>
+//					</p>
+//					<p>
+//						အောက်ပါ zoom link မှ ဝင် join ကာ တက်ရောက်ပေးပါနော်
+//					</p>
+//					<p>
+//						BS Camp is inviting you to a scheduled Zoom meeting.
+//					</p>
+//					<p>
+//						Topic: Study Abroad in Vietnam and Go to Japan <br>
+//						Time: Jul 27, 2024 09:30 PM Osaka, Sapporo, Tokyo
+//						မြန်မာစံတော်ချိန် ည ၇ နာရီမှ ၉ နာရီအထိ <br>
+//					</p>
+//					<span>Join Zoom Meeting</span> <br>
+//	                <a href="https://us02web.zoom.us/j/87929818623?pwd=IS2eWDnjV5iF0tn8aOVaOBJMbaoUOP.1">
+//				        https://us02web.zoom.us/j/87929818623?pwd=IS2eWDnjV5iF0tn8aOVaOBJMbaoUOP.1
+//	                </a>
+//	                <p>
+//		                Meeting ID: 879 2981 8623 <br>
+//						Passcode: 286476 <br><br>
+//						လေးစားစွာဖြင့် <br>
+//						BS Camp Team
+//	                </p>
+//	            </body>
+//	            </html>
+//	        """;
+//		
+//		List<String> currentBatch = new ArrayList<String>();
+//        for (int i = 0; i < bccRecipients.length; i++) {
+//            currentBatch.add(bccRecipients[i]);
+//            if (currentBatch.size() == BATCH_SIZE || i == bccRecipients.length - 1) {
+////                try {
+////                    emailUtil.sendMailWithBCC(title, subject, currentBatch.toArray(new String[0]));
+////                    System.out.println("Successfully sent to all mails!");
+////                } catch (MessagingException e) {
+////                    throw new RuntimeException("Unable to send password reset email, please try again", e);
+////                }
+//                currentBatch.clear();
+//            }
+//        }
+//        
+//        return "Successfully sent!";
+//	}
 	
 	@Override
-	public String sendMail(String[] bccRecipients) {
-		String subject = "Vietnam Zoom Seminar Test";
-		String htmlContent = """
-	            <html>
-	            <body>
-	                <h3>ဘွဲ့ယူပြီးတော့ Japan မှာသွားရောက်အလုပ်လုပ်ချင်ပါသလား</h3>
-	                <hr>
-	                <p>
-			            မင်္ဂလာပါ
-						BS Camp Japanese Language Academy မှဖြစ်ပါတယ်
-					</p>
-					<p>
-						ဒီအပတ်စနေနေ့ကျရင် Vietnam မှာ ဘွဲ့ယူပြီး <br>
-						Japan မှာ သွားရောက်အလုပ်လုပ်နိုင်မယ့် program အကြောင်း
-						ရှင်းပြမယ့် webinar ရှိတယ်နော်
-					</p>
-					<p>
-						အဲ့ဒီနေ့ကျရင် BS Camp ကနေ ၇ လပိုင်းကျောင်းနဲ့ သွားထားတဲ့ <br>
-						လက်ရှိမှာ Vietnam နိုင်ငံရဲ့ ကာလတို တက္ကသိုလ်မှာတက်ရောက်နေတဲ့ <br>
-						စီနီယာတချို့ကိုလည်း ဖိတ်ခေါ်ထားပါတယ်
-					</p>
-					<p>
-						တကယ်တက်ရောက်နေတဲ့စီနီယာတွေရဲ့ စကားသံတွေလည်း <br> နားထောင်လို့ရသလို မေးခွန်းတွေလည်းမေးလို့
-						ရတယ်နော်
-					</p>
-					<p>
-						Webinar ကျင်းပမည့်နေ့ရက် : <span style="color: red;">27.7.2024 (Sat)</span> <br>
-						Webinar ကျင်းပမည့်အချိန်  : <span style="color: red;">မြန်မာစံတော်ချိန် ည ၇ နာရီမှ ၉ နာရီအထိ</span>
-					</p>
-					<p>
-						အောက်ပါ zoom link မှ ဝင် join ကာ တက်ရောက်ပေးပါနော်
-					</p>
-					<p>
-						BS Camp is inviting you to a scheduled Zoom meeting.
-					</p>
-					<p>
-						Topic: Study Abroad in Vietnam and Go to Japan <br>
-						Time: Jul 27, 2024 09:30 PM Osaka, Sapporo, Tokyo
-						မြန်မာစံတော်ချိန် ည ၇ နာရီမှ ၉ နာရီအထိ <br>
-					</p>
-					<span>Join Zoom Meeting</span> <br>
-	                <a href="https://us02web.zoom.us/j/87929818623?pwd=IS2eWDnjV5iF0tn8aOVaOBJMbaoUOP.1">
-				        https://us02web.zoom.us/j/87929818623?pwd=IS2eWDnjV5iF0tn8aOVaOBJMbaoUOP.1
-	                </a>
-	                <p>
-		                Meeting ID: 879 2981 8623 <br>
-						Passcode: 286476 <br><br>
-						လေးစားစွာဖြင့် <br>
-						BS Camp Team
-	                </p>
-	            </body>
-	            </html>
-	        """;
-		
+	public String sendMail(String title, String subject, String[] bccRecipients) {
+		System.out.println("---------------------------------------------");
+		System.out.println("Dar Ka front ka send lite tae title " + title);
+		System.out.println("Dar Ka dot subject " + subject);
+		System.out.println("---------------------------------------------");
 		List<String> currentBatch = new ArrayList<String>();
         for (int i = 0; i < bccRecipients.length; i++) {
             currentBatch.add(bccRecipients[i]);
             if (currentBatch.size() == BATCH_SIZE || i == bccRecipients.length - 1) {
-                try {
-                    emailUtil.sendMailWithBCC(subject, htmlContent, currentBatch.toArray(new String[0]));
-                    System.out.println("Successfully sent to all mails!");
-                } catch (MessagingException e) {
-                    throw new RuntimeException("Unable to send password reset email, please try again", e);
-                }
+            	try {
+	                emailUtil.sendMailWithBCC(title, subject, currentBatch.toArray(new String[0]));
+	                System.out.println("Successfully sent to all mails!");
+	            } catch (MessagingException e) {
+	                throw new RuntimeException("Unable to send password reset email, please try again", e);
+	            }
                 currentBatch.clear();
             }
         }

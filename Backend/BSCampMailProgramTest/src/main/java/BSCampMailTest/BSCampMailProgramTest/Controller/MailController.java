@@ -3,10 +3,13 @@ package BSCampMailTest.BSCampMailProgramTest.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import BSCampMailTest.BSCampMailProgramTest.DTO.MailRequest;
 import BSCampMailTest.BSCampMailProgramTest.Service.MailService;
 import BSCampMailTest.BSCampMailProgramTest.ServiceImpl.MailServiceImpl;
 
@@ -20,10 +23,26 @@ public class MailController {
 	@Autowired
 	MailServiceImpl mailServiceImpl;
 	
+//	@PutMapping("/sendmail")
+//	public ResponseEntity<String> sendAllMails(){
+//		String[] bccRecipients = {"captainthura99@gmail.com","kohein10151099@gmail.com","dccreation392019@gmail.com"};
+//		return new ResponseEntity<>(mailService.sendMail(bccRecipients),HttpStatus.OK);
+//	}
+	
+//	@CrossOrigin(origins = "http://localhost:3000")
+//	@PutMapping("/sendmail")
+//	public ResponseEntity<String> sendAllMails(@RequestParam("title") String title, @RequestParam("subject") String subject, @RequestParam String[] bccRecipients){
+//		System.out.println("Send all Mails is working");
+////		String[] bccRecipients = {"captainthura99@gmail.com","kohein10151099@gmail.com","dccreation392019@gmail.com"};
+//		return new ResponseEntity<>(mailService.sendMail(title, subject, bccRecipients),HttpStatus.OK);
+//	}
+	
+	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/sendmail")
-	public ResponseEntity<String> sendAllMails(){
-		String[] bccRecipients = {"captainthura99@gmail.com","kohein10151099@gmail.com","dccreation392019@gmail.com"};
-		return new ResponseEntity<>(mailService.sendMail(bccRecipients),HttpStatus.OK);
+	public ResponseEntity<String> sendAllMails(@RequestBody MailRequest mailRequest) {
+	    System.out.println("Send all Mails is working");
+	    return new ResponseEntity<>(mailService.sendMail(mailRequest.getTitle(), mailRequest.getSubject(), mailRequest.getBccRecipients()), HttpStatus.OK);
 	}
 
 }

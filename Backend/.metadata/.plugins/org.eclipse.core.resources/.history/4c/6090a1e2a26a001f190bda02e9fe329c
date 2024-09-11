@@ -1,0 +1,5 @@
+package BSCampMailTest.BSCampMailProgramTest.Config;
+
+public class WebConfig {
+
+}
