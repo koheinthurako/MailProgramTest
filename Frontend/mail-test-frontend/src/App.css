@@ -1,6 +1,9 @@
 #root {
   max-width: 3000px;
+  height: max-content;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  background-image: url('../public/img/mainBG.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
