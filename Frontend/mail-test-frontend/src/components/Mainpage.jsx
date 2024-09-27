@@ -91,9 +91,11 @@ const Mainpage = () => {
 
     // Sending mail function
     const sendMails = () => {
+        const originalBody = subjectRef.current.value;
+        const formattedBody = originalBody.replace(/\n/g, '<br>');
         axios.put('http://localhost:8080/mail/sendmail', {
             title: titleRef.current.value,
-            subject: subjectRef.current.value,
+            subject: formattedBody,
             bccRecipients: totalMails
         }, {
             headers: {
