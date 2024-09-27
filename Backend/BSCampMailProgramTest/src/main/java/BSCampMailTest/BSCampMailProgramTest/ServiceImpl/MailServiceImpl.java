@@ -1,6 +1,7 @@
 package BSCampMailTest.BSCampMailProgramTest.ServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class MailServiceImpl implements MailService{
 	@Autowired
 	EmailUtil emailUtil;
 	private static final int BATCH_SIZE = 450; // Gmail's approximate limit for BCC recipients per email
+	private static final int BCC_LIMIT = 100; // Maximum number of BCC recipients per email
+	private static final int DAILY_LIMIT = 2000;
+	private int emailsSentToday = 0;
 	
 //	@Override
 //	public String sendMail(String title, String subject, String[] bccRecipients) {
@@ -93,27 +97,60 @@ public class MailServiceImpl implements MailService{
 //        return "Successfully sent!";
 //	}
 	
+	
+//	@Override
+//	public String sendMail(String title, String subject, String[] bccRecipients) {
+//		System.out.println("---------------------------------------------");
+//		System.out.println("Dar Ka front ka send lite tae title " + title);
+//		System.out.println("Dar Ka dot subject " + subject);
+//		System.out.println("---------------------------------------------");
+//		List<String> currentBatch = new ArrayList<String>();
+//        for (int i = 0; i < bccRecipients.length; i++) {
+//            currentBatch.add(bccRecipients[i]);
+//            if (currentBatch.size() == BATCH_SIZE || i == bccRecipients.length - 1) {
+//            	try {
+//	                emailUtil.sendMailWithBCC(title, subject, currentBatch.toArray(new String[0]));
+//	                System.out.println("Successfully sent to all mails!");
+//	            } catch (MessagingException e) {
+//	                throw new RuntimeException("Unable to send password reset email, please try again", e);
+//	            }
+//                currentBatch.clear();
+//            }
+//        }
+//        
+//        return "Successfully sent!";
+//	}
+	
 	@Override
 	public String sendMail(String title, String subject, String[] bccRecipients) {
-		System.out.println("---------------------------------------------");
-		System.out.println("Dar Ka front ka send lite tae title " + title);
-		System.out.println("Dar Ka dot subject " + subject);
-		System.out.println("---------------------------------------------");
-		List<String> currentBatch = new ArrayList<String>();
-        for (int i = 0; i < bccRecipients.length; i++) {
-            currentBatch.add(bccRecipients[i]);
-            if (currentBatch.size() == BATCH_SIZE || i == bccRecipients.length - 1) {
-            	try {
-	                emailUtil.sendMailWithBCC(title, subject, currentBatch.toArray(new String[0]));
-	                System.out.println("Successfully sent to all mails!");
-	            } catch (MessagingException e) {
-	                throw new RuntimeException("Unable to send password reset email, please try again", e);
-	            }
-                currentBatch.clear();
-            }
-        }
-        
-        return "Successfully sent!";
+	    System.out.println("---------------------------------------------");
+	    System.out.println("Title: " + title);
+	    System.out.println("Subject: " + subject);
+	    System.out.println("---------------------------------------------");
+
+	    List<String> currentBatch = new ArrayList<>();
+	    List<String> allRecipients = new ArrayList<>(Arrays.asList(bccRecipients));
+
+	    while (!allRecipients.isEmpty() && emailsSentToday < DAILY_LIMIT) {
+	        currentBatch.clear();
+	        for (int i = 0; i < BCC_LIMIT && !allRecipients.isEmpty(); i++) {
+	            currentBatch.add(allRecipients.remove(0)); // Take one recipient from the list
+	        }
+
+	        try {
+	            emailUtil.sendMailWithBCC(title, subject, currentBatch.toArray(new String[0]));
+	            emailsSentToday++; // Increment the count of emails sent today
+	            System.out.println("Successfully sent to " + currentBatch.size() + " recipients!");
+	        } catch (MessagingException e) {
+	            throw new RuntimeException("Unable to send email, please try again", e);
+	        }
+	    }
+
+	    if (emailsSentToday >= DAILY_LIMIT) {
+	        return "Daily email limit reached!";
+	    }
+
+	    return "Successfully sent!";
 	}
 
 }
